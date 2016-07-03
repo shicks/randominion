@@ -78,13 +78,22 @@ function readFiles(filenames) {
  * @return {!Promise<undefined>}
  */
 function write(json) {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(
-        args['output'],
-        args['output_wrapper'].replace('%s', json),
-        'utf-8',
-        (err) => err ? reject(err) : resolve(undefined));
-  });
+  return writeFile(args['output'], args['output_wrapper'].replace('%s', json));
+}
+
+function writeFile(file, content) {
+  if (file == '/dev/stdout' || file == '-') {
+    console.log(content);
+  } else if (file == '/dev/stderr') {
+    console.error(content);
+  } else {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+          file, content, 'utf-8',
+          (err) => err ? reject(err) : resolve(undefined));
+    });
+  }
+  return Promise.resolve(undefined);
 }
 
 
