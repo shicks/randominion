@@ -212,7 +212,16 @@ class Rule {
   setup(ctx) {}
   adjust(ctx, hand, rates) {}
   again(ctx, hand) {} // may mutate hand under rare situations
+
+  // how about a Finalizer w/ access to dealer?
+
 }
+
+// Give all rules a scale factor from 0 to 1
+//   -- at zero, no changes make any difference
+//   -- at one, changes make full difference
+//   e.g. w/ s=0.67, changing a rate of 0.7 to 0.1 will end up at 0.3
+//     (or better multiplicative scaling?  how to do zero?)
 
 // Built-in rules:
 //  - MinimumKingdomCards(10?)  - allow >10 for veto
