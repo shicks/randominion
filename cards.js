@@ -1,4 +1,5 @@
 const DefaultMap = require('./defaultmap');
+const Card = require('./card');
 
 
 /**
@@ -33,7 +34,7 @@ class Cards {
     this.names = [];
 
     for (const card of data) {
-      this.add(card);
+      this.add(new Card(card));
     }
   }
 
@@ -42,7 +43,7 @@ class Cards {
     const {name, cost, expansion, tags, text} = card;
     this.cards.set(name, card);
     this.expansions.get(expansion).add(name);
-    tags.forEach(tag => this.tags.get(tag).add(name));
+    for (const tag of tags) this.tags.get(tag).add(name);
     this.names.push(name);
   }
 
