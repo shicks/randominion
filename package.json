@@ -1,0 +1,23 @@
+{
+  "name": "randominion",
+  "version": "1.0.0",
+  "description": "Dominion Randomizer",
+  "main": "shuffle.js",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shicks/randominion.git"
+  },
+  "author": "Stephen Hicks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shicks/randominion/issues"
+  },
+  "homepage": "https://github.com/shicks/randominion#readme"
+}

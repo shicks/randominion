@@ -97,6 +97,7 @@ Rule.Factory = class {
     this.description_ = description;
     /** @private @const */
     this.args_ = args;
+    // TODO - repeatable?!?
   }
   get name() { return this.name_; }
   get description() { return this.description_; }
