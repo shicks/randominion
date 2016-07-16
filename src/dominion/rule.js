@@ -1,5 +1,60 @@
 const ImmutableList = require('./immutablelist');
 
+
+class Context {
+  /** @param {!Map<!Key<?>, ?>} map */
+  constructor(map) {
+    this.map_ = map;
+  }
+
+  /**
+   * @param {!Key<T>} key
+   * @return {T|undefined}
+   * @template T
+   */
+  get(key) {
+    return /** @type {T|undefined} */ (this.map_.get(key));
+  }
+}
+
+
+/** @template T */
+class WritableContext extends Context {
+  constructor() {
+    const map = new Map();
+    super(map);
+  }
+
+  /** @param {!Key<?>} key */
+  delete(key) {
+    this.map_.delete(key);
+  }
+
+  /**
+   * @param {!Key<T>} key
+   * @param {T|undefined} value
+   * @template T
+   */
+  set(key, value) {
+    this.map_.set(key, value);
+  }
+
+    // want to encode information about how many total cards
+    // are being dealt, or how many remain, or whatever...?
+    // init() functions should adjust these parameters before
+    // any apply() methods run?  But what about types?
+
+  /** @return {!Context} */ 
+  freeze() {
+    return new Context(new Map(this.map_.entries()));
+  }
+}
+
+
+/** @template T */
+class Key {}
+
+
 /** @template T */
 class Rule {
   constructor(weight = 1) {
@@ -7,11 +62,26 @@ class Rule {
   }
 
   /**
-   * @param {!ImmutableList<T>} cards
+   * @param {!WritableContext} contex
+   */
+  init(ctx) {}
+
+
+  // Rather than using Context, maybe allow rules to be aware of each other
+  // Pass in an ImmutableMultimap of rules (by constructor) as well...?
+  //   - rules.get(SelectionSize).kingdomCardsRemaining(selection)
+  // ---> no way for YoungWitch to be a separate rule...  maybe that's fine
+  // How to tag the bane?
+  //   - need to rename the card somehow...
+
+
+  /**
+   // param {!ImmutableList<T>} cards  -- param {number} remaining ...
+   * @param {!Context} context
    * @param {!ImmutableList<T>} selection
    * @return {function(T): number}
    */
-  apply(cards, selection) {
+  apply(ctx, selection) {
     throw new Error('Abstract Rule::apply not overridden in ' + this);
   }
 
