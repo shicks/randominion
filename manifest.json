@@ -1,0 +1,7 @@
+{
+  "name": "randominion",
+  "short_name": "randominion",
+  "description": "Randomizer for dominion games.",
+  "start_url": "/",
+  "display": "standalone"
+}
