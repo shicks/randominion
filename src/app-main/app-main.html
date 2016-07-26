@@ -1,27 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="./app-main-style.html">
 
 <dom-module id="app-main">
   <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
+    <style include="app-main-style"></style>
     <h2>Hello [[prop1]]</h2>
   </template>
-
-  <script>
-    Polymer({
-
-      is: 'app-main',
-
-      properties: {
-        prop1: {
-          type: String,
-          value: 'app-main',
-        },
-      },
-
-    });
-  </script>
+  <script src="app-main.js">
 </dom-module>

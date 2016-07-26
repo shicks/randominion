@@ -7,14 +7,14 @@
  * from the table of card data.
  */
 
-const fs = require('fs');
+const {readFiles, writeFile} = require('./common');
 const parseArgs = require('minimist');
 
-const USAGE = `Usage: build_cart_list.js OPTION... [--] FILE...
+const USAGE = `Usage: build_card_list.js OPTION... [--] FILE...
 
 Options:
   -o FILE, --output=FILE    Specify output file.
-  --output_wrapper=STRING   Use the given string as the output
+  --output-wrapper=STRING   Use the given string as the output
                             wrapper.  It should contain a '%s'
                             which will get JSON substituted in.
 
@@ -33,13 +33,13 @@ File arguments:
 
 // Handle command-line arguments.
 const args = parseArgs(process.argv.slice(2), {
-  'string': ['output_wrapper', 'output', 'o'],
+  'string': ['output-wrapper', 'output', 'o'],
   'alias': {
     'o': 'output'
   },
   'default': {
     'output': '/dev/stdout',
-    'output_wrapper': '%s',
+    'output-wrapper': '%s',
   },
   '--': true,
   'unknown'(arg) {
@@ -57,45 +57,13 @@ const args = parseArgs(process.argv.slice(2), {
 });
 
 
-
-/**
- * @param {!Array<string>} filenames
- * @return {!Promise<!Array<string>>}
- */
-function readFiles(filenames) {
-  return Promise.all(
-      filenames.map(file =>
-        new Promise((resolve, reject) => {
-          fs.readFile(file, 'utf-8', (err, data) => {
-            err ? reject(err) : resolve(data);
-          });
-        })));
-}
-
-
 /**
  * @param {string} json
  * @return {!Promise<undefined>}
  */
 function write(json) {
-  return writeFile(args['output'], args['output_wrapper'].replace('%s', json));
+  return writeFile(args['output'], args['output-wrapper'].replace('%s', json));
 }
-
-function writeFile(file, content) {
-  if (file == '/dev/stdout' || file == '-') {
-    console.log(content);
-  } else if (file == '/dev/stderr') {
-    console.error(content);
-  } else {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(
-          file, content, 'utf-8',
-          (err) => err ? reject(err) : resolve(undefined));
-    });
-  }
-  return Promise.resolve(undefined);
-}
-
 
 /**
  * Parses a card table.
@@ -133,5 +101,4 @@ function readTable(table) {
 readFiles([...args['_'], ...args['--']])
     .then(files => files.join('\n'))
     .then(readTable)
-    .then(write)
-    .then(() => {}, err => { throw err; });
+    .then(write);

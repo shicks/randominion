@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Dominion Randomizer",
   "main": "shuffle.js",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "emake": "github:shicks/emake",
+    "less": "^2.7.1",
     "minimist": "^1.2.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",

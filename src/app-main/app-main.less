@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+:host ::content {
+  div {
+    color: var(--my-toolbar-title-color);
+  }
+  --foo-bar: baz;
+
+  --my-foo-theme: {
+    color: green;
+  };
+
+  @apply(--my-foo-theme);
+}
